@@ -1,9 +1,9 @@
 package com.an9ar.bookkeeper
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.platform.setContent
 import com.an9ar.bookkeeper.screens.MainNavScreen
 import com.an9ar.bookkeeper.theme.BookKeeperTheme
 import com.an9ar.bookkeeper.viewmodels.MainViewModel
