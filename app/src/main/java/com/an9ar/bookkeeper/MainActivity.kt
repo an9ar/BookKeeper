@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.an9ar.bookkeeper.screens.MainNavScreen
 import com.an9ar.bookkeeper.theme.BookKeeperTheme
 import com.an9ar.bookkeeper.viewmodels.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private val mainViewModel: MainViewModel by viewModels()
