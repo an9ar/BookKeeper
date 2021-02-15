@@ -8,6 +8,7 @@ import com.an9ar.bookkeeper.screens.MainNavScreen
 import com.an9ar.bookkeeper.theme.BookKeeperTheme
 import com.an9ar.bookkeeper.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -18,7 +19,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             BookKeeperTheme {
-                MainNavScreen(mainViewModel = mainViewModel)
+                ProvideWindowInsets {
+                    MainNavScreen(mainViewModel = mainViewModel)
+                }
             }
         }
     }
