@@ -28,6 +28,7 @@ interface ColorPalette {
     val card: Color
     val text: Color
     val textSecondary: Color
+    val uiSurface: Color
     val success: Color
     val warning: Color
     val error: Color
@@ -44,6 +45,7 @@ fun lightColorPalette(): ColorPalette = object : ColorPalette {
     override val card: Color = AppColors.card
     override val text: Color = AppColors.text
     override val textSecondary: Color = AppColors.textSecondary
+    override val uiSurface: Color = AppColors.dark
     override val success: Color = AppColors.success
     override val warning: Color = AppColors.warning
     override val error: Color = AppColors.error
@@ -64,6 +66,7 @@ fun darkColorPalette(): ColorPalette = object : ColorPalette {
     override val card: Color = AppColors.cardReverse
     override val text: Color = AppColors.textReverse
     override val textSecondary: Color = AppColors.textReverseSecondary
+    override val uiSurface: Color = AppColors.light
     override val success: Color = AppColors.success
     override val warning: Color = AppColors.warning
     override val error: Color = AppColors.error
