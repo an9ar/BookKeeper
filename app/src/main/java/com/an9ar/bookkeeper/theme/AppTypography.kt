@@ -49,17 +49,17 @@ data class AppTypography internal constructor(
                 fontSize = 20.sp,
                 letterSpacing = 0.sp
         ),
-        val listHeader: TextStyle = TextStyle(
+        val bookItemTitle: TextStyle = TextStyle(
                 fontFamily = FontFamily(Font(R.font.montserrat_light)),
-                fontWeight = FontWeight.Bold,
-                fontSize = 14.sp,
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 12.sp,
                 letterSpacing = 0.sp,
                 lineHeight = 24.sp
         ),
-        val listItem: TextStyle = TextStyle(
+        val bookItemAuthor: TextStyle = TextStyle(
                 fontFamily = FontFamily(Font(R.font.montserrat_light)),
                 fontWeight = FontWeight.Medium,
-                fontSize = 16.sp,
+                fontSize = 12.sp,
                 letterSpacing = 0.sp,
                 lineHeight = 24.sp
         ),
