@@ -63,6 +63,13 @@ class MainViewModel @ViewModelInject constructor() : ViewModel() {
             author = "Рэй Брэдбери",
             previewUrl = "",
             comment = ""
+        ),
+        BookModel(
+            id = 8L,
+            title = "451 градус по Фаренгейту",
+            author = "Рэй Брэдбери",
+            previewUrl = "",
+            comment = ""
         )
     )
 
