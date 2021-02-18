@@ -16,10 +16,10 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
@@ -141,20 +141,19 @@ fun BookItem(
 
             }
             .fillMaxWidth()
-            .preferredHeight(200.dp)
+            .preferredHeight(208.dp)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             if (bookModel.previewUrl.isEmpty()) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_launcher_background),
                     contentDescription = null,
-                    modifier = Modifier.weight(0.75f)
+                    modifier = Modifier.fillMaxSize().weight(0.75f).padding(bottom = 2.dp)
                 )
             }
             else {
                 GlideImage(
-                    //data = bookModel.previewUrl,
-                    data = "https://img3.labirint.ru/rc/c764dc79816b3b680d5e4fbc56706ca7/220x340/books42/419735/cover.jpg?1563737926",
+                    data = bookModel.previewUrl,
                     contentDescription = null,
                     fadeIn = true,
                     contentScale = ContentScale.Crop,
@@ -169,101 +168,33 @@ fun BookItem(
                     error = {
                         Image(painter = painterResource(id = R.drawable.ic_launcher_background), contentDescription = null)
                     },
-                    modifier = Modifier.weight(0.75f)
+                    modifier = Modifier.weight(0.75f).padding(bottom = 2.dp)
                 )
             }
             Text(
                 text = bookModel.title,
                 style = AppTheme.typography.bookItemTitle,
                 color = AppTheme.colors.text,
+                softWrap = false,
                 textAlign = TextAlign.Center,
+                overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .weight(0.125f)
                     .fillMaxWidth()
-                    .background(Color.Red)
+                    .padding(top = 4.dp, bottom = 2.dp, start = 8.dp, end = 8.dp)
             )
             Text(
                 text = bookModel.author,
                 style = AppTheme.typography.bookItemAuthor,
-                color = AppTheme.colors.light,
+                color = AppTheme.colors.textSecondary,
+                softWrap = false,
+                textAlign = TextAlign.Center,
+                overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .weight(0.125f)
                     .fillMaxWidth()
-                    .background(Color.Green)
-                    .padding(4.dp)
+                    .padding(top = 2.dp, bottom = 4.dp, start = 8.dp, end = 8.dp)
             )
         }
     }
 }
-
-/*@Composable
-fun BookItem(
-    bookModel: BookModel
-) {
-    Card(
-        backgroundColor = AppTheme.colors.card,
-        shape = RoundedCornerShape(8.dp),
-        modifier = Modifier
-            .padding(horizontal = 8.dp, vertical = 4.dp)
-            .clickable {
-
-            }
-            .fillMaxWidth()
-    ) {
-        Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-            GlideImage(
-                data = bookModel.previewUrl,
-                contentDescription = null,
-                fadeIn = true,
-                contentScale = ContentScale.FillBounds,
-                loading = {
-                    Box(Modifier.fillMaxSize()) {
-                        CircularProgressIndicator(
-                            color = AppTheme.colors.warning,
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
-                },
-                modifier = Modifier.height(90.dp).width(120.dp)
-            )
-            Text(
-                text = bookModel.title,
-                style = AppTheme.typography.h6,
-                color = AppTheme.colors.text,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxSize()
-            )
-            Text(
-                text = bookModel.author,
-                style = AppTheme.typography.h6,
-                color = AppTheme.colors.textSecondary,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxSize()
-            )
-        }
-    }
-}*/
-
-/*
-@Composable
-fun BookCard(
-    bookModel: BookModel
-) {
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth()
-            .background(Color.Red)
-            .clickable {  }
-    ) {
-        GlideImage(
-            data = bookModel.previewUrl,
-            contentDescription = null,
-            error = { Image(painter = painterResource(id = R.drawable.ic_launcher_background), contentDescription = null) },
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier.height(180.dp).width(180.dp)
-        )
-        Text(text = bookModel.title)
-        Text(text = bookModel.author)
-    }
-}*/
