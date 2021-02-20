@@ -17,6 +17,9 @@ fun MainNavScreen(mainViewModel: MainViewModel) {
             composable(Screens.CollectionScreen.routeName) {
                 CollectionScreen(navHostController = navHostController, mainViewModel = mainViewModel)
             }
+            composable(Screens.MenuScreen.routeName) {
+                CollectionScreen(navHostController = navHostController, mainViewModel = mainViewModel)
+            }
         }
     }
 }
