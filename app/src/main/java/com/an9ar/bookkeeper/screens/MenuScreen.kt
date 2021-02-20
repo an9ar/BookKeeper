@@ -72,5 +72,77 @@ fun MenuScreen(navHostController: NavHostController) {
 fun MenuScreenContent(
     navHostController: NavHostController
 ) {
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(AppTheme.colors.background)) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .padding(16.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .fillMaxSize()
+                .weight(0.3f)
+                .background(AppTheme.colors.card)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                contentDescription = "App logo",
+                colorFilter = ColorFilter.tint(AppTheme.colors.text),
+                modifier = Modifier.preferredSize(64.dp)
+            )
+        }
+        Divider(
+            color = AppTheme.colors.card,
+            modifier = Modifier.padding(16.dp)
+        )
+        val menuItemsList = listOf(
+            "Settings" to {  },
+            "Credits" to {  },
+        )
+        LazyColumn(
+            contentPadding = LocalWindowInsets.current.navigationBars
+                .toPaddingValues(
+                    bottom = false,
+                    additionalTop = AppTheme.sizes.small,
+                    additionalBottom = AppTheme.sizes.bottomNavigationHeight
+                ),
+            modifier = Modifier
+                .fillMaxSize()
+                .weight(0.7f)
+        ) {
+            items(menuItemsList) { menuItem ->
+                MenuListItem(
+                    itemTitle = menuItem.first,
+                    onClickAction = menuItem.second
+                )
+            }
+        }
+    }
+}
 
+@Composable
+fun MenuListItem(
+    itemTitle: String,
+    onClickAction: () -> Unit
+) {
+    Card(
+        backgroundColor = AppTheme.colors.card,
+        shape = RoundedCornerShape(8.dp),
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 4.dp)
+            .clickable(onClick = onClickAction)
+            .fillMaxWidth()
+    ) {
+        Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = itemTitle,
+                color = AppTheme.colors.text,
+                textAlign = TextAlign.Center,
+                style = AppTheme.typography.h6,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+            )
+        }
+    }
 }
