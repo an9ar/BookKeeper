@@ -18,7 +18,10 @@ fun MainNavScreen(mainViewModel: MainViewModel) {
                 CollectionScreen(navHostController = navHostController, mainViewModel = mainViewModel)
             }
             composable(Screens.MenuScreen.routeName) {
-                CollectionScreen(navHostController = navHostController, mainViewModel = mainViewModel)
+                MenuScreen(navHostController = navHostController)
+            }
+            composable(Screens.CreditsScreen.routeName) {
+                CreditsScreen(navHostController = navHostController)
             }
         }
     }

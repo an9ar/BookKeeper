@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.navigate
 import com.an9ar.bookkeeper.R
 import com.an9ar.bookkeeper.data.BookModel
 import com.an9ar.bookkeeper.theme.AppTheme
@@ -68,7 +69,7 @@ fun CollectionScreenToolbar(
 
         IconButton(
             onClick = {
-
+                navHostController.navigate(Screens.MenuScreen.routeName)
             },
             modifier = Modifier.constrainAs(menuButton) {
                 top.linkTo(parent.top)

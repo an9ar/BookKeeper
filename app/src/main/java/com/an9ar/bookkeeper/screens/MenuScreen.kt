@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.navigate
 import com.an9ar.bookkeeper.R
 import com.an9ar.bookkeeper.theme.AppTheme
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
@@ -97,7 +98,7 @@ fun MenuScreenContent(
         )
         val menuItemsList = listOf(
             "Settings" to {  },
-            "Credits" to {  },
+            "Credits" to { navHostController.navigate(Screens.CreditsScreen.routeName) },
         )
         LazyColumn(
             contentPadding = LocalWindowInsets.current.navigationBars

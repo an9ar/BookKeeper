@@ -4,4 +4,5 @@ sealed class Screens(val routeName: String) {
     object SplashScreen : Screens(routeName = "SplashScreen")
     object CollectionScreen : Screens(routeName = "CollectionScreen")
     object MenuScreen : Screens(routeName = "MenuScreen")
+    object CreditsScreen : Screens(routeName = "CreditsScreen")
 }
