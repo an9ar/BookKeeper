@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -56,6 +57,7 @@ fun CollectionScreenToolbar(
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
+            .background(AppTheme.colors.toolbar)
             .padding(
                 LocalWindowInsets.current.systemBars
                     .toPaddingValues(
@@ -146,11 +148,16 @@ fun BookItem(
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             if (bookModel.previewUrl.isEmpty()) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize().weight(0.75f).padding(bottom = 2.dp)
-                )
+                Box(
+                    modifier = Modifier.fillMaxSize().weight(0.75f).padding(bottom = 2.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_book),
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(AppTheme.colors.background)
+                    )
+                }
             }
             else {
                 GlideImage(

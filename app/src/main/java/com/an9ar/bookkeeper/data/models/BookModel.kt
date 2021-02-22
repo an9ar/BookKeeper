@@ -1,4 +1,4 @@
-package com.an9ar.bookkeeper.data
+package com.an9ar.bookkeeper.data.models
 
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey

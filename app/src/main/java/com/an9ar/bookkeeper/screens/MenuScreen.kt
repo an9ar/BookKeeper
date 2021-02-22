@@ -32,6 +32,7 @@ fun MenuScreen(navHostController: NavHostController) {
         topBar = {
             ConstraintLayout(modifier = Modifier
                 .fillMaxWidth()
+                .background(AppTheme.colors.toolbar)
                 .padding(LocalWindowInsets.current.statusBars.toPaddingValues())
                 .preferredHeight(AppTheme.sizes.appBarHeight)
             ) {
