@@ -25,7 +25,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigate
 import com.an9ar.bookkeeper.R
-import com.an9ar.bookkeeper.data.BookModel
+import com.an9ar.bookkeeper.data.models.BookModel
 import com.an9ar.bookkeeper.theme.AppTheme
 import com.an9ar.bookkeeper.viewmodels.MainViewModel
 import dev.chrisbanes.accompanist.glide.GlideImage
@@ -121,7 +121,7 @@ fun CollectionScreenContent(
 ) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(2),
-        modifier = Modifier.padding(horizontal = 16.dp)
+        modifier = Modifier.background(AppTheme.colors.background).padding(horizontal = 16.dp)
     ) {
         items(mainViewModel.mockBooks) { item ->
             BookItem(bookModel = item)
