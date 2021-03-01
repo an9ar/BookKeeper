@@ -34,7 +34,7 @@ fun MenuScreen(navHostController: NavHostController) {
                 .fillMaxWidth()
                 .background(AppTheme.colors.toolbar)
                 .padding(LocalWindowInsets.current.statusBars.toPaddingValues())
-                .preferredHeight(AppTheme.sizes.appBarHeight)
+                .height(AppTheme.sizes.appBarHeight)
             ) {
                 val (screenTitle, backButton) = createRefs()
                 Text(
@@ -90,7 +90,7 @@ fun MenuScreenContent(
                 painter = painterResource(id = R.drawable.ic_launcher_foreground),
                 contentDescription = "App logo",
                 colorFilter = ColorFilter.tint(AppTheme.colors.text),
-                modifier = Modifier.preferredSize(64.dp)
+                modifier = Modifier.height(64.dp)
             )
         }
         Divider(

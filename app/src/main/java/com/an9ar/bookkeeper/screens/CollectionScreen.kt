@@ -144,7 +144,7 @@ fun BookItem(
 
             }
             .fillMaxWidth()
-            .preferredHeight(208.dp)
+            .height(208.dp)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             if (bookModel.previewUrl.isEmpty()) {

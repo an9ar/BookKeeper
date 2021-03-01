@@ -2,7 +2,7 @@ package com.an9ar.bookkeeper.viewmodels
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
-import com.an9ar.bookkeeper.data.BookModel
+import com.an9ar.bookkeeper.data.models.BookModel
 
 class MainViewModel @ViewModelInject constructor() : ViewModel() {
 
@@ -66,6 +66,41 @@ class MainViewModel @ViewModelInject constructor() : ViewModel() {
         ),
         BookModel(
             id = 8L,
+            title = "451 градус по Фаренгейту",
+            author = "Рэй Брэдбери",
+            previewUrl = "",
+            comment = ""
+        ),
+        BookModel(
+            id = 9L,
+            title = "Сто лет одиночества",
+            author = "Габриэль Гарсиа Маркес",
+            previewUrl = "",
+            comment = ""
+        ),
+        BookModel(
+            id = 10L,
+            title = "Полковнику никто не пишет",
+            author = "Габриэль Гарсиа Маркес",
+            previewUrl = "",
+            comment = ""
+        ),
+        BookModel(
+            id = 11L,
+            title = "1984",
+            author = "Джордж Оруэлл",
+            previewUrl = "https://img3.labirint.ru/rc/c764dc79816b3b680d5e4fbc56706ca7/220x340/books42/419735/cover.jpg?1563737926",
+            comment = ""
+        ),
+        BookModel(
+            id = 12L,
+            title = "451 градус по Фаренгейту",
+            author = "Рэй Брэдбери",
+            previewUrl = "",
+            comment = ""
+        ),
+        BookModel(
+            id = 13L,
             title = "451 градус по Фаренгейту",
             author = "Рэй Брэдбери",
             previewUrl = "",

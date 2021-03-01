@@ -2,9 +2,7 @@ package com.an9ar.bookkeeper.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
-import androidx.compose.runtime.staticAmbientOf
+import androidx.compose.runtime.*
 
 @Composable
 fun BookKeeperTheme(
@@ -13,9 +11,9 @@ fun BookKeeperTheme(
     content: @Composable() () -> Unit
 ) {
     val colors = if (darkTheme) darkColorPalette() else lightColorPalette()
-    Providers(
-        AmbientColor provides colors,
-        AmbientTypography provides typography,
+    CompositionLocalProvider(
+        LocalColor provides colors,
+        LocalTypography provides typography,
     ) {
         MaterialTheme(
             colors = colors.materialColors,
@@ -27,18 +25,16 @@ fun BookKeeperTheme(
 }
 
 object AppTheme {
-    @Composable
+
     val colors: ColorPalette
-        get() = AmbientColor.current
+        @Composable get() = LocalColor.current
 
-    @Composable
     val typography: AppTypography
-        get() = AmbientTypography.current
+        @Composable get() = LocalTypography.current
 
-    @Composable
     val sizes: AppSizes
-        get() = AppSizes()
+        @Composable get() = AppSizes()
 }
 
-internal val AmbientColor = staticAmbientOf { lightColorPalette() }
-internal val AmbientTypography = staticAmbientOf { AppTypography() }
+internal val LocalColor = staticCompositionLocalOf { lightColorPalette() }
+internal val LocalTypography = staticCompositionLocalOf { AppTypography() }
