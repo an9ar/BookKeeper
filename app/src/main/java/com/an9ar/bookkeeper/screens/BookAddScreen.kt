@@ -32,6 +32,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.an9ar.bookkeeper.R
 import com.an9ar.bookkeeper.data.models.BookModel
+import com.an9ar.bookkeeper.log
 import com.an9ar.bookkeeper.theme.AppTheme
 import com.an9ar.bookkeeper.viewmodels.MainViewModel
 import dev.chrisbanes.accompanist.glide.GlideImage
@@ -110,11 +111,14 @@ fun BookAddScreenContent(
     navHostController: NavHostController,
     mainViewModel: MainViewModel
 ) {
-    val bookData = BookModel()
+    val bookData by remember { mutableStateOf(BookModel()) }
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(AppTheme.colors.background)
     ) {
+        var titleIsEmptyError by remember { mutableStateOf(false) }
+        var authorIsEmptyError by remember { mutableStateOf(false) }
         BookAddImage(
             scope = this,
             onImagePreviewChanged = { bookData.previewUrl = it }
@@ -122,11 +126,13 @@ fun BookAddScreenContent(
         BookAddInputField(
             scope = this,
             label = "Book title",
+            isEmpty = titleIsEmptyError,
             onInputValueChanged = { bookData.title = it }
         )
         BookAddInputField(
             scope = this,
             label = "Book author",
+            isEmpty = authorIsEmptyError,
             onInputValueChanged = { bookData.author = it }
         )
         BookAddInputField(
@@ -136,7 +142,16 @@ fun BookAddScreenContent(
         )
         BookAddSubmitButton(
             scope = this,
-            onSubmitClick = {}
+            onSubmitClick = {
+                log("book - $bookData")
+                if (bookData.title.isEmpty() || bookData.author.isEmpty()) {
+                    titleIsEmptyError = bookData.title.isEmpty()
+                    authorIsEmptyError = bookData.author.isEmpty()
+                }
+                else {
+
+                }
+            }
         )
     }
 }
@@ -151,7 +166,7 @@ fun BookAddImage(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxSize()
-                .weight(0.4f)
+                .weight(0.35f)
         ) {
             val screenWidth = with(LocalDensity.current) { constraints.maxWidth.toDp() }
             val screenHeight = with(LocalDensity.current) { constraints.maxHeight.toDp() }
@@ -176,7 +191,7 @@ fun BookAddImage(
                             colorFilter = ColorFilter.tint(AppTheme.colors.uiSurface),
                             modifier = Modifier
                                 .fillMaxSize()
-                                .background(AppTheme.colors.background)
+                                .background(AppTheme.colors.uiSurfaceInverted)
                                 .padding(48.dp)
                         )
                     }
@@ -184,7 +199,7 @@ fun BookAddImage(
                 modifier = Modifier
                     .height(screenHeight)
                     .width(screenHeight)
-                    .padding(32.dp)
+                    .padding(16.dp)
                     .clip(CircleShape)
                     .clickable {  }
             )
@@ -197,6 +212,7 @@ fun BookAddImage(
 fun BookAddInputField(
     scope: ColumnScope,
     label: String,
+    isEmpty: Boolean = false,
     onInputValueChanged: (String) -> Unit
 ) {
     scope.run {
@@ -206,15 +222,8 @@ fun BookAddInputField(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
-                .weight(0.125f)
+                .weight(0.15f)
         ) {
-            Text(
-                text = label,
-                color = AppTheme.colors.text,
-                textAlign = TextAlign.Start,
-                style = AppTheme.typography.inputFieldTitle,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
-            )
             val keyboardController = LocalSoftwareKeyboardController.current
             var inputValue by rememberSaveable { mutableStateOf("") }
             OutlinedTextField(
@@ -223,18 +232,30 @@ fun BookAddInputField(
                     inputValue = it
                     onInputValueChanged(it)
                 },
+                isError = isEmpty,
                 singleLine = true,
-                textStyle = AppTheme.typography.body1,
+                textStyle = AppTheme.typography.inputFieldValue,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(
                     onDone = {
                         keyboardController?.hideSoftwareKeyboard()
                     }
                 ),
+                label = {
+                    Text(
+                        text = if (isEmpty) "$label (Should not be empty)" else label,
+                        color = if (isEmpty) AppTheme.colors.error else AppTheme.colors.text,
+                        textAlign = TextAlign.Start,
+                        style = AppTheme.typography.inputFieldTitle,
+                    )
+                },
                 trailingIcon = {
                     if (inputValue.isNotEmpty()) {
                         IconButton(
-                            onClick = { inputValue = "" }
+                            onClick = {
+                                inputValue = ""
+                                onInputValueChanged(inputValue)
+                            }
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
@@ -248,7 +269,11 @@ fun BookAddInputField(
                     textColor = AppTheme.colors.text,
                     focusedBorderColor = AppTheme.colors.text,
                     unfocusedBorderColor = AppTheme.colors.textSecondary,
-                    cursorColor = AppTheme.colors.text
+                    cursorColor = AppTheme.colors.text,
+                    errorBorderColor = AppTheme.colors.error,
+                    errorLabelColor = AppTheme.colors.error,
+                    unfocusedLabelColor = AppTheme.colors.textSecondary,
+                    focusedLabelColor = AppTheme.colors.text
                 ),
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
             )
@@ -267,13 +292,13 @@ fun BookAddSubmitButton(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(0.225f)
+                .weight(0.2f)
         ) {
             Button(
                 onClick = { onSubmitClick() },
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = AppTheme.colors.background
+                    backgroundColor = AppTheme.colors.uiSurface
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -281,7 +306,7 @@ fun BookAddSubmitButton(
             ) {
                 Text(
                     text = "Save",
-                    color = AppTheme.colors.text,
+                    color = AppTheme.colors.uiSurfaceInverted,
                     textAlign = TextAlign.Center,
                     style = AppTheme.typography.button,
                     modifier = Modifier.padding(16.dp)

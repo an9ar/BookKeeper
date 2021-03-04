@@ -88,6 +88,12 @@ data class AppTypography internal constructor(
                 fontSize = 14.sp,
                 letterSpacing = 1.25.sp
         ),
+        val inputFieldValue: TextStyle = TextStyle(
+                fontFamily = FontFamily(Font(R.font.montserrat_semibold)),
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 16.sp,
+                letterSpacing = 1.25.sp
+        ),
         val caption: TextStyle = TextStyle(
                 fontFamily = FontFamily(Font(R.font.montserrat_light)),
                 fontWeight = FontWeight.Bold,
