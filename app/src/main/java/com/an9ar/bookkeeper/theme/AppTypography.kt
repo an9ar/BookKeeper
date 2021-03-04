@@ -63,13 +63,6 @@ data class AppTypography internal constructor(
                 letterSpacing = 0.sp,
                 lineHeight = 24.sp
         ),
-        val queryText: TextStyle = TextStyle(
-                fontFamily = FontFamily(Font(R.font.montserrat_light)),
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 16.sp,
-                letterSpacing = 0.sp,
-                lineHeight = 24.sp
-        ),
         val body1: TextStyle = TextStyle(
                 fontFamily = FontFamily(Font(R.font.montserrat_light)),
                 fontWeight = FontWeight.Medium,

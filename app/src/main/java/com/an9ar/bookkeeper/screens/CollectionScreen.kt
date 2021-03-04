@@ -1,5 +1,6 @@
 package com.an9ar.bookkeeper.screens
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,12 +33,15 @@ import com.an9ar.bookkeeper.viewmodels.MainViewModel
 import dev.chrisbanes.accompanist.glide.GlideImage
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
 import dev.chrisbanes.accompanist.insets.toPaddingValues
+import io.realm.Realm
 
 @Composable
 fun CollectionScreen(
     navHostController: NavHostController,
     mainViewModel: MainViewModel
 ) {
+    val listOfBooks = Realm.getDefaultInstance().where(BookModel::class.java).findAll()
+    Log.i("LOG_TAG", "list - $listOfBooks")
     Scaffold(
         topBar = {
             CollectionScreenToolbar(navHostController = navHostController)
@@ -98,7 +102,7 @@ fun CollectionScreenToolbar(
         )
         IconButton(
             onClick = {
-
+                navHostController.navigate(Screens.BookAddScreen.routeName)
             },
             modifier = Modifier.constrainAs(addButton) {
                 top.linkTo(parent.top)
@@ -123,7 +127,9 @@ fun CollectionScreenContent(
 ) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(2),
-        modifier = Modifier.background(AppTheme.colors.background).padding(horizontal = 16.dp)
+        modifier = Modifier
+            .background(AppTheme.colors.background)
+            .padding(horizontal = 16.dp)
     ) {
         items(mainViewModel.mockBooks) { item ->
             BookItem(bookModel = item)
@@ -140,7 +146,7 @@ fun BookItem(
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 4.dp)
-            .clickable{
+            .clickable {
 
             }
             .fillMaxWidth()
@@ -149,7 +155,10 @@ fun BookItem(
         Column(modifier = Modifier.fillMaxSize()) {
             if (bookModel.previewUrl.isEmpty()) {
                 Box(
-                    modifier = Modifier.fillMaxSize().weight(0.75f).padding(bottom = 2.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(0.75f)
+                        .padding(bottom = 2.dp),
                     contentAlignment = Alignment.Center
                 ) {
                     Image(
@@ -158,8 +167,7 @@ fun BookItem(
                         colorFilter = ColorFilter.tint(AppTheme.colors.background)
                     )
                 }
-            }
-            else {
+            } else {
                 GlideImage(
                     data = bookModel.previewUrl,
                     contentDescription = null,
@@ -174,9 +182,14 @@ fun BookItem(
                         }
                     },
                     error = {
-                        Image(painter = painterResource(id = R.drawable.ic_launcher_background), contentDescription = null)
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_launcher_background),
+                            contentDescription = null
+                        )
                     },
-                    modifier = Modifier.weight(0.75f).padding(bottom = 2.dp)
+                    modifier = Modifier
+                        .weight(0.75f)
+                        .padding(bottom = 2.dp)
                 )
             }
             Text(
