@@ -38,6 +38,7 @@ import com.an9ar.bookkeeper.viewmodels.MainViewModel
 import dev.chrisbanes.accompanist.glide.GlideImage
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
 import dev.chrisbanes.accompanist.insets.toPaddingValues
+import java.util.*
 
 
 @Composable
@@ -143,13 +144,14 @@ fun BookAddScreenContent(
         BookAddSubmitButton(
             scope = this,
             onSubmitClick = {
-                log("book - $bookData")
                 if (bookData.title.isEmpty() || bookData.author.isEmpty()) {
                     titleIsEmptyError = bookData.title.isEmpty()
                     authorIsEmptyError = bookData.author.isEmpty()
                 }
                 else {
-
+                    bookData.id = Calendar.getInstance().timeInMillis.toString() + " " + UUID.randomUUID().toString()
+                    mainViewModel.addNewBook(bookData = bookData)
+                    navHostController.navigateUp()
                 }
             }
         )

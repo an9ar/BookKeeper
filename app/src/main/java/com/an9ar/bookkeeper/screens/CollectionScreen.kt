@@ -1,6 +1,6 @@
 package com.an9ar.bookkeeper.screens
 
-import android.util.Log
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
@@ -33,24 +34,28 @@ import com.an9ar.bookkeeper.viewmodels.MainViewModel
 import dev.chrisbanes.accompanist.glide.GlideImage
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
 import dev.chrisbanes.accompanist.insets.toPaddingValues
-import io.realm.Realm
 
 @Composable
 fun CollectionScreen(
     navHostController: NavHostController,
     mainViewModel: MainViewModel
 ) {
-    val listOfBooks = Realm.getDefaultInstance().where(BookModel::class.java).findAll()
-    Log.i("LOG_TAG", "list - $listOfBooks")
+    val booksCollection = mainViewModel.actualBookCollection.observeAsState(initial = emptyList())
     Scaffold(
         topBar = {
             CollectionScreenToolbar(navHostController = navHostController)
         }
     ) {
-        CollectionScreenContent(
-            navHostController = navHostController,
-            mainViewModel = mainViewModel
-        )
+        Crossfade(targetState = booksCollection) {
+            if (booksCollection.value.isEmpty()) {
+                mainViewModel.getBooksList()
+            }
+            CollectionScreenContent(
+                navHostController = navHostController,
+                mainViewModel = mainViewModel,
+                booksCollection = booksCollection.value
+            )
+        }
     }
 }
 
@@ -123,15 +128,17 @@ fun CollectionScreenToolbar(
 @Composable
 fun CollectionScreenContent(
     navHostController: NavHostController,
-    mainViewModel: MainViewModel
+    mainViewModel: MainViewModel,
+    booksCollection: List<BookModel>
 ) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(2),
         modifier = Modifier
+            .fillMaxSize()
             .background(AppTheme.colors.background)
             .padding(horizontal = 16.dp)
     ) {
-        items(mainViewModel.mockBooks) { item ->
+        items(booksCollection) { item ->
             BookItem(bookModel = item)
         }
     }
@@ -146,11 +153,11 @@ fun BookItem(
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 4.dp)
+            .fillMaxWidth()
+            .height(208.dp)
             .clickable {
 
             }
-            .fillMaxWidth()
-            .height(208.dp)
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             if (bookModel.previewUrl.isEmpty()) {

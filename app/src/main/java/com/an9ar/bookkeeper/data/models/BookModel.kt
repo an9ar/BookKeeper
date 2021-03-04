@@ -4,7 +4,7 @@ import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
 
 open class BookModel(
-    @PrimaryKey var id: Long = 0L,
+    @PrimaryKey var id: String = "",
     var title: String = "",
     var author: String = "",
     var previewUrl: String = "",
