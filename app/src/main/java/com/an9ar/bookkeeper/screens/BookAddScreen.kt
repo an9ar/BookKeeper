@@ -1,28 +1,40 @@
 package com.an9ar.bookkeeper.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
+import com.an9ar.bookkeeper.R
 import com.an9ar.bookkeeper.data.models.BookModel
 import com.an9ar.bookkeeper.theme.AppTheme
 import com.an9ar.bookkeeper.viewmodels.MainViewModel
+import dev.chrisbanes.accompanist.glide.GlideImage
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
 import dev.chrisbanes.accompanist.insets.toPaddingValues
 
@@ -37,7 +49,7 @@ fun BookAddScreen(
             BookAddScreenToolbar(navHostController = navHostController)
         }
     ) {
-        BookAddScreenToolbarContent(
+        BookAddScreenContent(
             navHostController = navHostController,
             mainViewModel = mainViewModel
         )
@@ -94,30 +106,89 @@ fun BookAddScreenToolbar(
 }
 
 @Composable
-fun BookAddScreenToolbarContent(
+fun BookAddScreenContent(
     navHostController: NavHostController,
     mainViewModel: MainViewModel
 ) {
-    var bookData = BookModel()
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(AppTheme.colors.background)
+    val bookData = BookModel()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
     ) {
+        BookAddImage(
+            scope = this,
+            onImagePreviewChanged = { bookData.previewUrl = it }
+        )
         BookAddInputField(
             scope = this,
-            color = Color.Red,
+            label = "Book title",
             onInputValueChanged = { bookData.title = it }
         )
         BookAddInputField(
             scope = this,
-            color = Color.Blue,
+            label = "Book author",
             onInputValueChanged = { bookData.author = it }
         )
         BookAddInputField(
             scope = this,
-            color = Color.Green,
+            label = "Your short description (optional)",
             onInputValueChanged = { bookData.comment = it }
         )
+        BookAddSubmitButton(
+            scope = this,
+            onSubmitClick = {}
+        )
+    }
+}
+
+@Composable
+fun BookAddImage(
+    scope: ColumnScope,
+    onImagePreviewChanged: (String) -> Unit
+) {
+    scope.run {
+        BoxWithConstraints(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .weight(0.4f)
+        ) {
+            val screenWidth = with(LocalDensity.current) { constraints.maxWidth.toDp() }
+            val screenHeight = with(LocalDensity.current) { constraints.maxHeight.toDp() }
+
+            GlideImage(
+                data = "",
+                contentDescription = "Author",
+                contentScale = ContentScale.Crop,
+                loading = {
+                    Box(Modifier.fillMaxSize()) {
+                        CircularProgressIndicator(Modifier.align(Alignment.Center))
+                    }
+                },
+                error = {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier.background(Color.White)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_book),
+                            contentDescription = null,
+                            colorFilter = ColorFilter.tint(AppTheme.colors.uiSurface),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(AppTheme.colors.background)
+                                .padding(48.dp)
+                        )
+                    }
+                },
+                modifier = Modifier
+                    .height(screenHeight)
+                    .width(screenHeight)
+                    .padding(32.dp)
+                    .clip(CircleShape)
+                    .clickable {  }
+            )
+        }
     }
 }
 
@@ -125,21 +196,28 @@ fun BookAddScreenToolbarContent(
 @Composable
 fun BookAddInputField(
     scope: ColumnScope,
-    color: Color,
+    label: String,
     onInputValueChanged: (String) -> Unit
 ) {
     scope.run {
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically,
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(0.15f)
-                .background(color)
+                .padding(horizontal = 16.dp)
+                .weight(0.125f)
         ) {
+            Text(
+                text = label,
+                color = AppTheme.colors.text,
+                textAlign = TextAlign.Start,
+                style = AppTheme.typography.inputFieldTitle,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+            )
             val keyboardController = LocalSoftwareKeyboardController.current
             var inputValue by rememberSaveable { mutableStateOf("") }
-            BasicTextField(
+            OutlinedTextField(
                 value = inputValue,
                 onValueChange = {
                     inputValue = it
@@ -152,8 +230,64 @@ fun BookAddInputField(
                     onDone = {
                         keyboardController?.hideSoftwareKeyboard()
                     }
-                )
+                ),
+                trailingIcon = {
+                    if (inputValue.isNotEmpty()) {
+                        IconButton(
+                            onClick = { inputValue = "" }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Clear,
+                                contentDescription = "Clear button",
+                                tint = AppTheme.colors.textSecondary
+                            )
+                        }
+                    }
+                },
+                colors = TextFieldDefaults.outlinedTextFieldColors(
+                    textColor = AppTheme.colors.text,
+                    focusedBorderColor = AppTheme.colors.text,
+                    unfocusedBorderColor = AppTheme.colors.textSecondary,
+                    cursorColor = AppTheme.colors.text
+                ),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
             )
+        }
+    }
+}
+
+@Composable
+fun BookAddSubmitButton(
+    scope: ColumnScope,
+    onSubmitClick: () -> Unit
+) {
+    scope.run {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(0.225f)
+        ) {
+            Button(
+                onClick = { onSubmitClick() },
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = AppTheme.colors.background
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 32.dp)
+            ) {
+                Text(
+                    text = "Save",
+                    color = AppTheme.colors.text,
+                    textAlign = TextAlign.Center,
+                    style = AppTheme.typography.button,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+
         }
     }
 }
