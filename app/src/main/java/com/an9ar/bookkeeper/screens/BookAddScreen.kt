@@ -26,13 +26,13 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.an9ar.bookkeeper.R
 import com.an9ar.bookkeeper.data.models.BookModel
-import com.an9ar.bookkeeper.log
 import com.an9ar.bookkeeper.theme.AppTheme
 import com.an9ar.bookkeeper.viewmodels.MainViewModel
 import dev.chrisbanes.accompanist.glide.GlideImage
@@ -217,6 +217,7 @@ fun BookAddImage(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ImageAddingDialog(
     isOpened: Boolean,
@@ -270,6 +271,76 @@ fun ImageAddingDialog(
                         modifier = Modifier.padding(16.dp)
                     )
                 }
+                val keyboardController = LocalSoftwareKeyboardController.current
+                var imageURL by remember { mutableStateOf("") }
+                OutlinedTextField(
+                    value = imageURL,
+                    onValueChange = {
+                        imageURL = it
+                    },
+                    singleLine = true,
+                    textStyle = AppTheme.typography.inputFieldValue,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            keyboardController?.hideSoftwareKeyboard()
+                        }
+                    ),
+                    label = {
+                        Text(
+                            text = "Image URL",
+                            color = AppTheme.colors.text,
+                            textAlign = TextAlign.Start,
+                            style = AppTheme.typography.inputFieldTitle,
+                        )
+                    },
+                    trailingIcon = {
+                        if (imageURL.isNotEmpty()) {
+                            IconButton(
+                                onClick = {
+                                    imageURL = ""
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Clear,
+                                    contentDescription = "Clear button",
+                                    tint = AppTheme.colors.textSecondary
+                                )
+                            }
+                        }
+                    },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        textColor = AppTheme.colors.text,
+                        focusedBorderColor = AppTheme.colors.text,
+                        unfocusedBorderColor = AppTheme.colors.textSecondary,
+                        cursorColor = AppTheme.colors.text,
+                        errorBorderColor = AppTheme.colors.error,
+                        errorLabelColor = AppTheme.colors.error,
+                        unfocusedLabelColor = AppTheme.colors.textSecondary,
+                        focusedLabelColor = AppTheme.colors.text
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                )
+                Button(
+                    onClick = {},
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = AppTheme.colors.card
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
+                ) {
+                    Text(
+                        text = "Submit",
+                        color = AppTheme.colors.text,
+                        textAlign = TextAlign.Center,
+                        style = AppTheme.typography.button,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
             },
             onDismissRequest = { onDialogClose() },
             backgroundColor = AppTheme.colors.background,
@@ -314,7 +385,7 @@ fun BookAddInputField(
                 ),
                 label = {
                     Text(
-                        text = if (isEmpty) "$label (Should not be empty)" else label,
+                        text = if (isEmpty) "$label (Not empty)" else label,
                         color = if (isEmpty) AppTheme.colors.error else AppTheme.colors.text,
                         textAlign = TextAlign.Start,
                         style = AppTheme.typography.inputFieldTitle,
