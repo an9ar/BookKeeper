@@ -147,9 +147,10 @@ fun BookAddScreenContent(
                 if (bookData.title.isEmpty() || bookData.author.isEmpty()) {
                     titleIsEmptyError = bookData.title.isEmpty()
                     authorIsEmptyError = bookData.author.isEmpty()
-                }
-                else {
-                    bookData.id = Calendar.getInstance().timeInMillis.toString() + " " + UUID.randomUUID().toString()
+                } else {
+                    bookData.id =
+                        Calendar.getInstance().timeInMillis.toString() + " " + UUID.randomUUID()
+                            .toString()
                     mainViewModel.addNewBook(bookData = bookData)
                     navHostController.navigateUp()
                 }
@@ -172,6 +173,8 @@ fun BookAddImage(
         ) {
             val screenWidth = with(LocalDensity.current) { constraints.maxWidth.toDp() }
             val screenHeight = with(LocalDensity.current) { constraints.maxHeight.toDp() }
+
+            var isOpened by remember { mutableStateOf(false) }
 
             GlideImage(
                 data = "",
@@ -203,9 +206,75 @@ fun BookAddImage(
                     .width(screenHeight)
                     .padding(16.dp)
                     .clip(CircleShape)
-                    .clickable {  }
+                    .clickable { isOpened = true }
+            )
+
+            ImageAddingDialog(
+                isOpened = isOpened,
+                onDialogClose = { isOpened = false }
             )
         }
+    }
+}
+
+@Composable
+fun ImageAddingDialog(
+    isOpened: Boolean,
+    onDialogClose: () -> Unit
+) {
+    if (isOpened) {
+        AlertDialog(
+            title = {
+                Text(
+                    text = "Choose image loading way",
+                    color = AppTheme.colors.text,
+                    textAlign = TextAlign.Center,
+                    style = AppTheme.typography.button,
+                    modifier = Modifier.fillMaxWidth().padding(8.dp)
+                )
+            },
+            buttons = {
+                Button(
+                    onClick = {},
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = AppTheme.colors.card
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
+                ) {
+                    Text(
+                        text = "Via gallery",
+                        color = AppTheme.colors.text,
+                        textAlign = TextAlign.Center,
+                        style = AppTheme.typography.button,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+                Button(
+                    onClick = {},
+                    shape = RoundedCornerShape(8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = AppTheme.colors.card
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
+                ) {
+                    Text(
+                        text = "Via URL",
+                        color = AppTheme.colors.text,
+                        textAlign = TextAlign.Center,
+                        style = AppTheme.typography.button,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+            },
+            onDismissRequest = { onDialogClose() },
+            backgroundColor = AppTheme.colors.background,
+            modifier = Modifier.clip(RoundedCornerShape(16.dp))
+        )
     }
 }
 
@@ -277,7 +346,9 @@ fun BookAddInputField(
                     unfocusedLabelColor = AppTheme.colors.textSecondary,
                     focusedLabelColor = AppTheme.colors.text
                 ),
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
             )
         }
     }
