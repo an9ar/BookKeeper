@@ -1,5 +1,6 @@
 package com.an9ar.bookkeeper.screens
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -224,6 +225,7 @@ fun ImageAddingDialog(
     onDialogClose: () -> Unit
 ) {
     if (isOpened) {
+        var isExpanded by remember { mutableStateOf(false) }
         AlertDialog(
             title = {
                 Text(
@@ -236,10 +238,12 @@ fun ImageAddingDialog(
             },
             buttons = {
                 Button(
+                    enabled = !isExpanded,
                     onClick = {},
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = AppTheme.colors.card
+                        backgroundColor = AppTheme.colors.card,
+                        disabledBackgroundColor = AppTheme.colors.card.copy(alpha = 0.5f)
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
@@ -254,7 +258,7 @@ fun ImageAddingDialog(
                     )
                 }
                 Button(
-                    onClick = {},
+                    onClick = { isExpanded = !isExpanded },
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = AppTheme.colors.card
@@ -264,87 +268,89 @@ fun ImageAddingDialog(
                         .padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
                 ) {
                     Text(
-                        text = "Via URL",
+                        text = if (isExpanded) "Cancel" else "Via URL",
                         color = AppTheme.colors.text,
                         textAlign = TextAlign.Center,
                         style = AppTheme.typography.button,
                         modifier = Modifier.padding(16.dp)
                     )
                 }
-                val keyboardController = LocalSoftwareKeyboardController.current
-                var imageURL by remember { mutableStateOf("") }
-                OutlinedTextField(
-                    value = imageURL,
-                    onValueChange = {
-                        imageURL = it
-                    },
-                    singleLine = true,
-                    textStyle = AppTheme.typography.inputFieldValue,
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            keyboardController?.hideSoftwareKeyboard()
-                        }
-                    ),
-                    label = {
-                        Text(
-                            text = "Image URL",
-                            color = AppTheme.colors.text,
-                            textAlign = TextAlign.Start,
-                            style = AppTheme.typography.inputFieldTitle,
-                        )
-                    },
-                    trailingIcon = {
-                        if (imageURL.isNotEmpty()) {
-                            IconButton(
-                                onClick = {
-                                    imageURL = ""
-                                }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Clear,
-                                    contentDescription = "Clear button",
-                                    tint = AppTheme.colors.textSecondary
-                                )
+                if (isExpanded) {
+                    val keyboardController = LocalSoftwareKeyboardController.current
+                    var imageURL by remember { mutableStateOf("") }
+                    OutlinedTextField(
+                        value = imageURL,
+                        onValueChange = {
+                            imageURL = it
+                        },
+                        singleLine = true,
+                        textStyle = AppTheme.typography.inputFieldValue,
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                keyboardController?.hideSoftwareKeyboard()
                             }
-                        }
-                    },
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        textColor = AppTheme.colors.text,
-                        focusedBorderColor = AppTheme.colors.text,
-                        unfocusedBorderColor = AppTheme.colors.textSecondary,
-                        cursorColor = AppTheme.colors.text,
-                        errorBorderColor = AppTheme.colors.error,
-                        errorLabelColor = AppTheme.colors.error,
-                        unfocusedLabelColor = AppTheme.colors.textSecondary,
-                        focusedLabelColor = AppTheme.colors.text
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                )
-                Button(
-                    onClick = {},
-                    shape = RoundedCornerShape(8.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        backgroundColor = AppTheme.colors.card
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
-                ) {
-                    Text(
-                        text = "Submit",
-                        color = AppTheme.colors.text,
-                        textAlign = TextAlign.Center,
-                        style = AppTheme.typography.button,
-                        modifier = Modifier.padding(16.dp)
+                        ),
+                        label = {
+                            Text(
+                                text = "Image URL",
+                                color = AppTheme.colors.text,
+                                textAlign = TextAlign.Start,
+                                style = AppTheme.typography.inputFieldTitle,
+                            )
+                        },
+                        trailingIcon = {
+                            if (imageURL.isNotEmpty()) {
+                                IconButton(
+                                    onClick = {
+                                        imageURL = ""
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Clear,
+                                        contentDescription = "Clear button",
+                                        tint = AppTheme.colors.textSecondary
+                                    )
+                                }
+                            }
+                        },
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            textColor = AppTheme.colors.text,
+                            focusedBorderColor = AppTheme.colors.text,
+                            unfocusedBorderColor = AppTheme.colors.textSecondary,
+                            cursorColor = AppTheme.colors.text,
+                            errorBorderColor = AppTheme.colors.error,
+                            errorLabelColor = AppTheme.colors.error,
+                            unfocusedLabelColor = AppTheme.colors.textSecondary,
+                            focusedLabelColor = AppTheme.colors.text
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
                     )
+                    Button(
+                        onClick = {},
+                        shape = RoundedCornerShape(8.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = AppTheme.colors.card
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp, start = 16.dp, end = 16.dp, bottom = 16.dp)
+                    ) {
+                        Text(
+                            text = "Submit",
+                            color = AppTheme.colors.text,
+                            textAlign = TextAlign.Center,
+                            style = AppTheme.typography.button,
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
                 }
             },
             onDismissRequest = { onDialogClose() },
             backgroundColor = AppTheme.colors.background,
-            modifier = Modifier.clip(RoundedCornerShape(16.dp))
+            modifier = Modifier.clip(RoundedCornerShape(16.dp)).animateContentSize()
         )
     }
 }
