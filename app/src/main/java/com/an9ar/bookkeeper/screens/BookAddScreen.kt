@@ -122,6 +122,7 @@ fun BookAddScreenContent(
         var isValidated by remember { mutableStateOf(false) }
         BookAddImage(
             scope = this,
+            navHostController = navHostController,
             onImagePreviewChanged = { bookData.previewUrl = it }
         )
         BookAddInputField(
@@ -160,6 +161,7 @@ fun BookAddScreenContent(
 @Composable
 fun BookAddImage(
     scope: ColumnScope,
+    navHostController: NavHostController,
     onImagePreviewChanged: (String) -> Unit
 ) {
     scope.run {
@@ -173,9 +175,10 @@ fun BookAddImage(
             val screenHeight = with(LocalDensity.current) { constraints.maxHeight.toDp() }
 
             var isOpened by remember { mutableStateOf(false) }
+            var imageData by remember { mutableStateOf("") }
 
             GlideImage(
-                data = "",
+                data = imageData,
                 contentDescription = "Author",
                 contentScale = ContentScale.Crop,
                 loading = {
@@ -208,8 +211,12 @@ fun BookAddImage(
             )
 
             ImageAddingDialog(
+                navHostController = navHostController,
                 isOpened = isOpened,
-                onDialogClose = { isOpened = false }
+                onDialogClose = { imageURL ->
+                    imageData = imageURL
+                    isOpened = false
+                }
             )
         }
     }
@@ -218,11 +225,13 @@ fun BookAddImage(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ImageAddingDialog(
+    navHostController: NavHostController,
     isOpened: Boolean,
-    onDialogClose: () -> Unit
+    onDialogClose: (String) -> Unit
 ) {
     if (isOpened) {
         var isExpanded by remember { mutableStateOf(false) }
+        var imageURL by remember { mutableStateOf("") }
         AlertDialog(
             title = {
                 Text(
@@ -275,7 +284,6 @@ fun ImageAddingDialog(
                 if (isExpanded) {
                     val keyboardController = LocalSoftwareKeyboardController.current
                     var isValidated by remember { mutableStateOf(false) }
-                    var imageURL by remember { mutableStateOf("") }
                     OutlinedTextField(
                         value = imageURL,
                         onValueChange = {
@@ -330,6 +338,7 @@ fun ImageAddingDialog(
                     Button(
                         onClick = {
                             isValidated = true
+                            //if (imageURL.isNotEmpty()) navHostController.navigateUp()
                         },
                         shape = RoundedCornerShape(8.dp),
                         colors = ButtonDefaults.buttonColors(
@@ -349,7 +358,9 @@ fun ImageAddingDialog(
                     }
                 }
             },
-            onDismissRequest = { onDialogClose() },
+            onDismissRequest = {
+                onDialogClose(imageURL)
+                               },
             backgroundColor = AppTheme.colors.background,
             modifier = Modifier.clip(RoundedCornerShape(16.dp)).animateContentSize()
         )
