@@ -119,8 +119,7 @@ fun BookAddScreenContent(
             .fillMaxSize()
             .background(AppTheme.colors.background)
     ) {
-        var titleIsEmptyError by remember { mutableStateOf(false) }
-        var authorIsEmptyError by remember { mutableStateOf(false) }
+        var isValidated by remember { mutableStateOf(false) }
         BookAddImage(
             scope = this,
             onImagePreviewChanged = { bookData.previewUrl = it }
@@ -128,13 +127,13 @@ fun BookAddScreenContent(
         BookAddInputField(
             scope = this,
             label = "Book title",
-            isEmpty = titleIsEmptyError,
+            isValidated = isValidated,
             onInputValueChanged = { bookData.title = it }
         )
         BookAddInputField(
             scope = this,
             label = "Book author",
-            isEmpty = authorIsEmptyError,
+            isValidated = isValidated,
             onInputValueChanged = { bookData.author = it }
         )
         BookAddInputField(
@@ -145,10 +144,8 @@ fun BookAddScreenContent(
         BookAddSubmitButton(
             scope = this,
             onSubmitClick = {
-                if (bookData.title.isEmpty() || bookData.author.isEmpty()) {
-                    titleIsEmptyError = bookData.title.isEmpty()
-                    authorIsEmptyError = bookData.author.isEmpty()
-                } else {
+                isValidated = true
+                if (bookData.title.isNotEmpty() && bookData.author.isNotEmpty()) {
                     bookData.id =
                         Calendar.getInstance().timeInMillis.toString() + " " + UUID.randomUUID()
                             .toString()
@@ -277,12 +274,14 @@ fun ImageAddingDialog(
                 }
                 if (isExpanded) {
                     val keyboardController = LocalSoftwareKeyboardController.current
+                    var isValidated by remember { mutableStateOf(false) }
                     var imageURL by remember { mutableStateOf("") }
                     OutlinedTextField(
                         value = imageURL,
                         onValueChange = {
                             imageURL = it
                         },
+                        isError = imageURL.isEmpty() && isValidated,
                         singleLine = true,
                         textStyle = AppTheme.typography.inputFieldValue,
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -293,8 +292,8 @@ fun ImageAddingDialog(
                         ),
                         label = {
                             Text(
-                                text = "Image URL",
-                                color = AppTheme.colors.text,
+                                text = if (imageURL.isEmpty() && isValidated) "Image URL (Not empty)" else "Image URL",
+                                color = if (imageURL.isEmpty() && isValidated) AppTheme.colors.error else AppTheme.colors.text,
                                 textAlign = TextAlign.Start,
                                 style = AppTheme.typography.inputFieldTitle,
                             )
@@ -329,7 +328,9 @@ fun ImageAddingDialog(
                             .padding(horizontal = 16.dp)
                     )
                     Button(
-                        onClick = {},
+                        onClick = {
+                            isValidated = true
+                        },
                         shape = RoundedCornerShape(8.dp),
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = AppTheme.colors.card
@@ -360,7 +361,7 @@ fun ImageAddingDialog(
 fun BookAddInputField(
     scope: ColumnScope,
     label: String,
-    isEmpty: Boolean = false,
+    isValidated: Boolean = false,
     onInputValueChanged: (String) -> Unit
 ) {
     scope.run {
@@ -380,7 +381,7 @@ fun BookAddInputField(
                     inputValue = it
                     onInputValueChanged(it)
                 },
-                isError = isEmpty,
+                isError = inputValue.isEmpty() && isValidated,
                 singleLine = true,
                 textStyle = AppTheme.typography.inputFieldValue,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
@@ -391,8 +392,8 @@ fun BookAddInputField(
                 ),
                 label = {
                     Text(
-                        text = if (isEmpty) "$label (Not empty)" else label,
-                        color = if (isEmpty) AppTheme.colors.error else AppTheme.colors.text,
+                        text = if (inputValue.isEmpty() && isValidated) "$label (Not empty)" else label,
+                        color = if (inputValue.isEmpty() && isValidated) AppTheme.colors.error else AppTheme.colors.text,
                         textAlign = TextAlign.Start,
                         style = AppTheme.typography.inputFieldTitle,
                     )
