@@ -9,9 +9,14 @@ import com.an9ar.bookkeeper.theme.BookKeeperTheme
 import com.an9ar.bookkeeper.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
+import io.realm.Realm
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var realmObject: Realm
 
     private val mainViewModel: MainViewModel by viewModels()
 
@@ -20,7 +25,10 @@ class MainActivity : AppCompatActivity() {
         setContent {
             BookKeeperTheme {
                 ProvideWindowInsets {
-                    MainNavScreen(mainViewModel = mainViewModel)
+                    MainNavScreen(
+                        mainViewModel = mainViewModel,
+                        realmObject = realmObject
+                    )
                 }
             }
         }

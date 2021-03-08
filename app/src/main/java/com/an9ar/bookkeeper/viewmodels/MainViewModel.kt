@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import com.an9ar.bookkeeper.data.models.BookModel
 import io.realm.Realm
 
-class MainViewModel @ViewModelInject constructor() : ViewModel() {
+class MainViewModel @ViewModelInject constructor(
+    private val realmObject: Realm
+) : ViewModel() {
 
-    private val realmObject: Realm by lazy { Realm.getDefaultInstance() }
+    //private val realmObject: Realm by lazy { Realm.getDefaultInstance() }
 
     val actualBookCollection = MutableLiveData<List<BookModel>>()
 
@@ -17,9 +19,13 @@ class MainViewModel @ViewModelInject constructor() : ViewModel() {
         actualBookCollection.value = newList
     }
 
-    fun addNewBook(bookData: BookModel) {
+    fun getBookById(id: String): BookModel? {
+        return realmObject.where(BookModel::class.java).equalTo("id", id).findFirst()
+    }
+
+    fun insertOrUpdateBook(bookData: BookModel) {
         realmObject.executeTransactionAsync { realm ->
-            realm.insert(bookData)
+            realm.insertOrUpdate(bookData)
         }
         getBooksList()
     }

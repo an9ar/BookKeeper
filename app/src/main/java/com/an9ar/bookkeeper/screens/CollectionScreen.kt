@@ -139,14 +139,15 @@ fun CollectionScreenContent(
             .padding(horizontal = 16.dp)
     ) {
         items(booksCollection) { item ->
-            BookItem(bookModel = item)
+            BookItem(bookModel = item, navHostController = navHostController)
         }
     }
 }
 
 @Composable
 fun BookItem(
-    bookModel: BookModel
+    bookModel: BookModel,
+    navHostController: NavHostController
 ) {
     Card(
         backgroundColor = AppTheme.colors.card,
@@ -156,7 +157,7 @@ fun BookItem(
             .fillMaxWidth()
             .height(208.dp)
             .clickable {
-
+                navHostController.navigate("${Screens.BookInfoScreen.routeName}/${bookModel.id}")
             }
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
