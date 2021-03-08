@@ -122,7 +122,6 @@ fun BookAddScreenContent(
         var isValidated by remember { mutableStateOf(false) }
         BookAddImage(
             scope = this,
-            navHostController = navHostController,
             onImagePreviewChanged = { bookData.previewUrl = it }
         )
         BookAddInputField(
@@ -161,7 +160,6 @@ fun BookAddScreenContent(
 @Composable
 fun BookAddImage(
     scope: ColumnScope,
-    navHostController: NavHostController,
     onImagePreviewChanged: (String) -> Unit
 ) {
     scope.run {
@@ -211,10 +209,13 @@ fun BookAddImage(
             )
 
             ImageAddingDialog(
-                navHostController = navHostController,
                 isOpened = isOpened,
-                onDialogClose = { imageURL ->
+                onSubmitClick = { imageURL ->
                     imageData = imageURL
+                    onImagePreviewChanged(imageURL)
+                    isOpened = false
+                },
+                onDialogClose = {
                     isOpened = false
                 }
             )
@@ -225,9 +226,9 @@ fun BookAddImage(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ImageAddingDialog(
-    navHostController: NavHostController,
     isOpened: Boolean,
-    onDialogClose: (String) -> Unit
+    onSubmitClick: (String) -> Unit,
+    onDialogClose: () -> Unit
 ) {
     if (isOpened) {
         var isExpanded by remember { mutableStateOf(false) }
@@ -239,7 +240,9 @@ fun ImageAddingDialog(
                     color = AppTheme.colors.text,
                     textAlign = TextAlign.Center,
                     style = AppTheme.typography.button,
-                    modifier = Modifier.fillMaxWidth().padding(8.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
                 )
             },
             buttons = {
@@ -338,6 +341,7 @@ fun ImageAddingDialog(
                     Button(
                         onClick = {
                             isValidated = true
+                            onSubmitClick(imageURL)
                             //if (imageURL.isNotEmpty()) navHostController.navigateUp()
                         },
                         shape = RoundedCornerShape(8.dp),
@@ -359,10 +363,12 @@ fun ImageAddingDialog(
                 }
             },
             onDismissRequest = {
-                onDialogClose(imageURL)
-                               },
+                onDialogClose()
+            },
             backgroundColor = AppTheme.colors.background,
-            modifier = Modifier.clip(RoundedCornerShape(16.dp)).animateContentSize()
+            modifier = Modifier
+                .clip(RoundedCornerShape(16.dp))
+                .animateContentSize()
         )
     }
 }
