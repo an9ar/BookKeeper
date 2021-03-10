@@ -3,6 +3,7 @@ package com.an9ar.bookkeeper.ui
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -31,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import com.an9ar.bookkeeper.R
+import com.an9ar.bookkeeper.data.types.BookType
 import com.an9ar.bookkeeper.theme.AppTheme
 import dev.chrisbanes.accompanist.glide.GlideImage
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
@@ -89,6 +91,7 @@ fun BookScreenToolbar(
 @Composable
 fun BookScreenImage(
     scope: ColumnScope,
+    layoutWeight: Float,
     initImage: String = "",
     onImagePreviewChanged: (String) -> Unit
 ) {
@@ -97,7 +100,7 @@ fun BookScreenImage(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .fillMaxSize()
-                .weight(0.35f)
+                .weight(layoutWeight)
         ) {
             val screenWidth = with(LocalDensity.current) { constraints.maxWidth.toDp() }
             val screenHeight = with(LocalDensity.current) { constraints.maxHeight.toDp() }
@@ -307,6 +310,7 @@ fun ImageChangeDialog(
 @Composable
 fun BookScreenInputField(
     scope: ColumnScope,
+    layoutWeight: Float,
     initValue: String = "",
     label: String,
     isValidated: Boolean = false,
@@ -318,8 +322,8 @@ fun BookScreenInputField(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .weight(0.15f)
+                .padding(horizontal = 32.dp)
+                .weight(layoutWeight)
         ) {
             val keyboardController = LocalSoftwareKeyboardController.current
             var inputValue by rememberSaveable { mutableStateOf(initValue) }
@@ -372,10 +376,67 @@ fun BookScreenInputField(
                     unfocusedLabelColor = AppTheme.colors.textSecondary,
                     focusedLabelColor = AppTheme.colors.text
                 ),
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+    }
+}
+
+@Composable
+fun BookScreenTypeDropdownMenu(
+    scope: ColumnScope,
+    initValue: String = "",
+    layoutWeight: Float,
+    onBookTypeChanged: (String) -> Unit
+) {
+    scope.run {
+        var expanded by remember { mutableStateOf(false) }
+        val items = listOf(
+            BookType.READ.title,
+            BookType.CURRENTLY_READING.title,
+            BookType.READING_LIST.title,
+        )
+        var selectedValue by remember { mutableStateOf(initValue) }
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .wrapContentHeight()
+                .padding(horizontal = 32.dp)
+                .weight(layoutWeight)
+                .border(
+                    width = 1.dp,
+                    color = AppTheme.colors.uiSurface,
+                    shape = RoundedCornerShape(4.dp)
+                )
+        ) {
+            Text(
+                text = if (selectedValue.isEmpty()) "Choose book type" else selectedValue,
+                color = AppTheme.colors.text,
+                textAlign = TextAlign.Center,
+                style = AppTheme.typography.button,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
+                    .clickable { expanded = true }
+                    .padding(16.dp),
             )
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+                modifier = Modifier
+            ) {
+                items.forEachIndexed { index, itemTitle ->
+                    DropdownMenuItem(
+                        onClick = {
+                            selectedValue = items[index]
+                            onBookTypeChanged(items[index])
+                            expanded = false
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(text = itemTitle)
+                    }
+                }
+            }
         }
     }
 }
@@ -383,6 +444,7 @@ fun BookScreenInputField(
 @Composable
 fun BookScreenSubmitButton(
     scope: ColumnScope,
+    layoutWeight: Float,
     onSubmitClick: () -> Unit
 ) {
     scope.run {
@@ -391,7 +453,7 @@ fun BookScreenSubmitButton(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(0.2f)
+                .weight(layoutWeight)
         ) {
             Button(
                 onClick = { onSubmitClick() },

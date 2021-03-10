@@ -8,10 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.an9ar.bookkeeper.data.models.BookModel
 import com.an9ar.bookkeeper.theme.AppTheme
-import com.an9ar.bookkeeper.ui.BookScreenImage
-import com.an9ar.bookkeeper.ui.BookScreenInputField
+import com.an9ar.bookkeeper.ui.*
 import com.an9ar.bookkeeper.ui.BookScreenSubmitButton
-import com.an9ar.bookkeeper.ui.BookScreenToolbar
 import com.an9ar.bookkeeper.viewmodels.MainViewModel
 import java.util.*
 
@@ -50,27 +48,37 @@ fun BookAddScreenContent(
         var isValidated by remember { mutableStateOf(false) }
         BookScreenImage(
             scope = this,
+            layoutWeight = 0.35f,
             onImagePreviewChanged = { bookData.previewUrl = it }
+        )
+        BookScreenTypeDropdownMenu(
+            scope = this,
+            layoutWeight = 0.125f,
+            onBookTypeChanged = { bookData.bookType = it }
         )
         BookScreenInputField(
             scope = this,
+            layoutWeight = 0.125f,
             label = "Book title",
             isValidated = isValidated,
             onInputValueChanged = { bookData.title = it }
         )
         BookScreenInputField(
             scope = this,
+            layoutWeight = 0.125f,
             label = "Book author",
             isValidated = isValidated,
             onInputValueChanged = { bookData.author = it }
         )
         BookScreenInputField(
             scope = this,
+            layoutWeight = 0.125f,
             label = "Your short description (optional)",
             onInputValueChanged = { bookData.comment = it }
         )
         BookScreenSubmitButton(
             scope = this,
+            layoutWeight = 0.15f,
             onSubmitClick = {
                 isValidated = true
                 if (bookData.title.isNotEmpty() && bookData.author.isNotEmpty()) {

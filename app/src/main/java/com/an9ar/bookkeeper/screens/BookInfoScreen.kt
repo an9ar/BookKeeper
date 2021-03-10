@@ -9,10 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.an9ar.bookkeeper.data.models.BookModel
 import com.an9ar.bookkeeper.theme.AppTheme
-import com.an9ar.bookkeeper.ui.BookScreenImage
-import com.an9ar.bookkeeper.ui.BookScreenInputField
-import com.an9ar.bookkeeper.ui.BookScreenSubmitButton
-import com.an9ar.bookkeeper.ui.BookScreenToolbar
+import com.an9ar.bookkeeper.ui.*
 import com.an9ar.bookkeeper.viewmodels.MainViewModel
 import io.realm.Realm
 
@@ -59,6 +56,7 @@ fun BookInfoScreenContent(
         var isValidated by remember { mutableStateOf(false) }
         BookScreenImage(
             scope = this,
+            layoutWeight = 0.35f,
             initImage = bookData.previewUrl,
             onImagePreviewChanged = { changedImage ->
                 realmObject.executeTransaction {
@@ -66,8 +64,19 @@ fun BookInfoScreenContent(
                 }
             }
         )
+        BookScreenTypeDropdownMenu(
+            scope = this,
+            layoutWeight = 0.125f,
+            initValue = bookData.bookType,
+            onBookTypeChanged = { changedType ->
+                realmObject.executeTransaction {
+                    bookData.bookType = changedType
+                }
+            }
+        )
         BookScreenInputField(
             scope = this,
+            layoutWeight = 0.125f,
             initValue = bookData.title,
             label = "Book title",
             isValidated = isValidated,
@@ -79,6 +88,7 @@ fun BookInfoScreenContent(
         )
         BookScreenInputField(
             scope = this,
+            layoutWeight = 0.125f,
             initValue = bookData.author,
             label = "Book author",
             isValidated = isValidated,
@@ -90,6 +100,7 @@ fun BookInfoScreenContent(
         )
         BookScreenInputField(
             scope = this,
+            layoutWeight = 0.125f,
             initValue = bookData.comment,
             label = "Your short description (optional)",
             onInputValueChanged = { changedString ->
@@ -100,6 +111,7 @@ fun BookInfoScreenContent(
         )
         BookScreenSubmitButton(
             scope = this,
+            layoutWeight = 0.15f,
             onSubmitClick = {
                 isValidated = true
                 if (bookData.title.isNotEmpty() && bookData.author.isNotEmpty()) {
