@@ -8,9 +8,10 @@ open class BookModel(
     var title: String = "",
     var author: String = "",
     var previewUrl: String = "",
-    var comment: String = ""
+    var comment: String = "",
+    var bookType: String = ""
 ): RealmObject() {
     override fun toString(): String {
-        return "BookModel(id=$id, title='$title', author='$author', previewUrl='$previewUrl', comment='$comment')"
+        return "BookModel(id='$id', title='$title', author='$author', previewUrl='$previewUrl', comment='$comment', bookType=$bookType)"
     }
 }
