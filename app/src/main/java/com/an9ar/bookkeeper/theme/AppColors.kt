@@ -16,6 +16,8 @@ object AppColors {
     val textSecondary = Color(0xFF333333)
     val textReverse = Color(0xFFEEEEEE)
     val textReverseSecondary = Color(0xFFCCCCCC)
+    val bottomNavItem = Color(0xFF000000)
+    val bottomNavItemReverse = Color(0xFFFFFFFF)
     val success = Color(0xFF00E096)
     val warning = Color(0xFFFFAA00)
     val error = Color(0xFFFF3D31)
@@ -33,6 +35,7 @@ interface ColorPalette {
     val textSecondary: Color
     val uiSurface: Color
     val uiSurfaceInverted: Color
+    val bottomNavItem: Color
     val success: Color
     val warning: Color
     val error: Color
@@ -52,6 +55,7 @@ fun lightColorPalette(): ColorPalette = object : ColorPalette {
     override val textSecondary: Color = AppColors.textSecondary
     override val uiSurface: Color = AppColors.dark
     override val uiSurfaceInverted: Color = AppColors.light
+    override val bottomNavItem: Color = AppColors.bottomNavItem
     override val success: Color = AppColors.success
     override val warning: Color = AppColors.warning
     override val error: Color = AppColors.error
@@ -75,6 +79,7 @@ fun darkColorPalette(): ColorPalette = object : ColorPalette {
     override val textSecondary: Color = AppColors.textReverseSecondary
     override val uiSurface: Color = AppColors.light
     override val uiSurfaceInverted: Color = AppColors.dark
+    override val bottomNavItem: Color = AppColors.bottomNavItemReverse
     override val success: Color = AppColors.success
     override val warning: Color = AppColors.warning
     override val error: Color = AppColors.error

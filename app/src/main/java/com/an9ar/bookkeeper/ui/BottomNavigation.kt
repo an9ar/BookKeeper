@@ -1,10 +1,7 @@
 package com.an9ar.bookkeeper.ui
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.Icon
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.runtime.*
@@ -24,7 +21,9 @@ fun TransparentBottomBar(
         modifier = modifier
     ) {
         Row(
-            Modifier.fillMaxWidth().height(56.dp),
+            Modifier
+                .fillMaxWidth()
+                .height(56.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             content = content
         )
@@ -50,12 +49,19 @@ fun BookKeeperBottomNavigation(
                     Icon(
                         imageVector = Icons.Filled.ThumbUp,
                         contentDescription = null,
-                        tint = if (isSelected) AppTheme.colors.error else AppTheme.colors.uiSurface
+                        tint = if (isSelected) AppTheme.colors.bottomNavItem else AppTheme.colors.bottomNavItem.copy(
+                            alpha = ContentAlpha.medium
+                        )
                     )
-                       },
-                selectedContentColor = AppTheme.colors.error,
-                unselectedContentColor = AppTheme.colors.textSecondary,
-                label = { Text(text = tab.title) },
+                },
+                selectedContentColor = AppTheme.colors.bottomNavItem,
+                unselectedContentColor = AppTheme.colors.bottomNavItem.copy(alpha = ContentAlpha.medium),
+                label = {
+                    Text(
+                        text = tab.title,
+                        style = if (isSelected) AppTheme.typography.bottomNavItemBoldTitle else AppTheme.typography.bottomNavItemTitle,
+                    )
+                },
                 selected = isSelected,
                 onClick = {
                     currentRoute = tab

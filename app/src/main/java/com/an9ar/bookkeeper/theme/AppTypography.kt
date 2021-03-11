@@ -94,8 +94,14 @@ data class AppTypography internal constructor(
                 fontSize = 16.sp,
                 letterSpacing = 1.25.sp
         ),
-        val caption: TextStyle = TextStyle(
+        val bottomNavItemTitle: TextStyle = TextStyle(
                 fontFamily = FontFamily(Font(R.font.montserrat_light)),
+                fontWeight = FontWeight.Bold,
+                fontSize = 12.sp,
+                letterSpacing = 0.15.sp
+        ),
+        val bottomNavItemBoldTitle: TextStyle = TextStyle(
+                fontFamily = FontFamily(Font(R.font.montserrat_semibold)),
                 fontWeight = FontWeight.Bold,
                 fontSize = 12.sp,
                 letterSpacing = 0.15.sp
