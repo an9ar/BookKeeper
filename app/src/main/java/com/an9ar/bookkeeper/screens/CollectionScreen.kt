@@ -28,7 +28,9 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigate
 import com.an9ar.bookkeeper.R
-import com.an9ar.bookkeeper.data.models.BookModel
+import com.an9ar.bookkeeper.data.models.BookEntity
+import com.an9ar.bookkeeper.data.models.toBookEntity
+import com.an9ar.bookkeeper.data.types.BookType
 import com.an9ar.bookkeeper.theme.AppTheme
 import com.an9ar.bookkeeper.viewmodels.MainViewModel
 import dev.chrisbanes.accompanist.glide.GlideImage
@@ -53,7 +55,7 @@ fun CollectionScreen(
             CollectionScreenContent(
                 navHostController = navHostController,
                 mainViewModel = mainViewModel,
-                booksCollection = booksCollection.value
+                booksCollection = booksCollection.value.map { it.toBookEntity() }
             )
         }
     }
@@ -129,7 +131,7 @@ fun CollectionScreenToolbar(
 fun CollectionScreenContent(
     navHostController: NavHostController,
     mainViewModel: MainViewModel,
-    booksCollection: List<BookModel>
+    booksCollection: List<BookEntity>
 ) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(2),
@@ -138,7 +140,7 @@ fun CollectionScreenContent(
             .background(AppTheme.colors.background)
             .padding(horizontal = 16.dp)
     ) {
-        items(booksCollection) { item ->
+        items(booksCollection.filter { it.bookType == BookType.CURRENTLY_READING }) { item ->
             BookItem(bookModel = item, navHostController = navHostController)
         }
     }
@@ -146,7 +148,7 @@ fun CollectionScreenContent(
 
 @Composable
 fun BookItem(
-    bookModel: BookModel,
+    bookModel: BookEntity,
     navHostController: NavHostController
 ) {
     Card(
