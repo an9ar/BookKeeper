@@ -393,7 +393,7 @@ fun BookScreenTypeDropdownMenu(
         var expanded by remember { mutableStateOf(false) }
         val items = listOf(
             BookType.READ.title,
-            BookType.CURRENTLY_READING.title,
+            BookType.IN_PROGRESS.title,
             BookType.READING_LIST.title,
         )
         var selectedValue by remember { mutableStateOf(initValue) }

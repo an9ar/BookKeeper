@@ -19,7 +19,7 @@ object AppColors {
     val success = Color(0xFF00E096)
     val warning = Color(0xFFFFAA00)
     val error = Color(0xFFFF3D31)
-    val light = Color(0xFFEEEEEE)
+    val light = Color(0xFFCCCCCC)
     val dark = Color(0xFF1E1E1E)
     val transparent = Color(0x00000000)
 }

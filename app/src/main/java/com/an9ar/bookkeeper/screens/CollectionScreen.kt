@@ -14,7 +14,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +32,7 @@ import com.an9ar.bookkeeper.data.models.BookEntity
 import com.an9ar.bookkeeper.data.models.toBookEntity
 import com.an9ar.bookkeeper.data.types.BookType
 import com.an9ar.bookkeeper.theme.AppTheme
+import com.an9ar.bookkeeper.ui.BookKeeperBottomNavigation
 import com.an9ar.bookkeeper.viewmodels.MainViewModel
 import dev.chrisbanes.accompanist.glide.GlideImage
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
@@ -43,9 +44,21 @@ fun CollectionScreen(
     mainViewModel: MainViewModel
 ) {
     val booksCollection = mainViewModel.actualBookCollection.observeAsState(initial = emptyList())
+    var selectedContentBookType by remember { mutableStateOf(BookType.IN_PROGRESS) }
     Scaffold(
         topBar = {
-            CollectionScreenToolbar(navHostController = navHostController)
+            CollectionScreenToolbar(
+                screenTitle = selectedContentBookType.title,
+                navHostController = navHostController
+            )
+        },
+        bottomBar = {
+            BookKeeperBottomNavigation(
+                navHostController = navHostController,
+                onTabClicked = { selectedTab ->
+                    selectedContentBookType = selectedTab
+                }
+            )
         }
     ) {
         Crossfade(targetState = booksCollection) {
@@ -55,7 +68,9 @@ fun CollectionScreen(
             CollectionScreenContent(
                 navHostController = navHostController,
                 mainViewModel = mainViewModel,
-                booksCollection = booksCollection.value.map { it.toBookEntity() }
+                booksCollection = booksCollection.value
+                    .map { it.toBookEntity() }
+                    .filter { it.bookType == selectedContentBookType }
             )
         }
     }
@@ -63,6 +78,7 @@ fun CollectionScreen(
 
 @Composable
 fun CollectionScreenToolbar(
+    screenTitle: String,
     navHostController: NavHostController
 ) {
     ConstraintLayout(
@@ -97,7 +113,7 @@ fun CollectionScreenToolbar(
             )
         }
         Text(
-            text = "Books collections",
+            text = screenTitle,
             color = AppTheme.colors.text,
             style = AppTheme.typography.h6,
             modifier = Modifier.constrainAs(titleBlock) {
@@ -135,12 +151,17 @@ fun CollectionScreenContent(
 ) {
     LazyVerticalGrid(
         cells = GridCells.Fixed(2),
+        contentPadding = LocalWindowInsets.current.navigationBars
+            .toPaddingValues(
+                bottom = false,
+                additionalBottom = AppTheme.sizes.bottomNavigationHeight
+            ),
         modifier = Modifier
             .fillMaxSize()
             .background(AppTheme.colors.background)
             .padding(horizontal = 16.dp)
     ) {
-        items(booksCollection.filter { it.bookType == BookType.CURRENTLY_READING }) { item ->
+        items(booksCollection) { item ->
             BookItem(bookModel = item, navHostController = navHostController)
         }
     }

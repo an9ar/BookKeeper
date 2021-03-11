@@ -9,7 +9,7 @@ data class BookEntity(
     val author: String = "",
     val previewUrl: String = "",
     val comment: String = "",
-    val bookType: BookType = BookType.CURRENTLY_READING
+    val bookType: BookType = BookType.IN_PROGRESS
 )
 
 fun BookModel.toBookEntity(): BookEntity =
