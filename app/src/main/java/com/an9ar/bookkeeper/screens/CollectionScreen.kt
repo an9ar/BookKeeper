@@ -54,7 +54,6 @@ fun CollectionScreen(
         },
         bottomBar = {
             BookKeeperBottomNavigation(
-                navHostController = navHostController,
                 onTabClicked = { selectedTab ->
                     selectedContentBookType = selectedTab
                 }
