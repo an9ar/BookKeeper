@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.layout.*
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Constraints
@@ -58,7 +59,7 @@ fun BookKeeperBottomNavigation(onTabClicked: (BookType) -> Unit) {
             BottomNavigationItemWithoutRipple(
                 icon = {
                     Icon(
-                        imageVector = Icons.Filled.ThumbUp,
+                        painter = painterResource(id = tab.iconId),
                         contentDescription = null,
                         tint = if (isSelected) AppTheme.colors.bottomNavItem else AppTheme.colors.bottomNavItem.copy(
                             alpha = ContentAlpha.disabled

@@ -1,9 +1,11 @@
 package com.an9ar.bookkeeper.data.types
 
-enum class BookType(val title: String) {
-    READ("Read"),
-    IN_PROGRESS("In progress"),
-    READING_LIST("Reading list")
+import com.an9ar.bookkeeper.R
+
+enum class BookType(val title: String, val iconId: Int) {
+    READ("Read", R.drawable.ic_books_read),
+    IN_PROGRESS("In progress", R.drawable.ic_books_reading),
+    READING_LIST("Reading list", R.drawable.ic_books_future_list)
 }
 
 fun String.toBookType(): BookType {
