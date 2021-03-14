@@ -63,7 +63,8 @@ fun BookKeeperBottomNavigation(onTabClicked: (BookType) -> Unit) {
                         contentDescription = null,
                         tint = if (isSelected) AppTheme.colors.bottomNavItem else AppTheme.colors.bottomNavItem.copy(
                             alpha = ContentAlpha.disabled
-                        )
+                        ),
+                        modifier = Modifier.size(24.dp)
                     )
                 },
                 selectedContentColor = AppTheme.colors.bottomNavItem,
