@@ -433,7 +433,11 @@ fun BookScreenTypeDropdownMenu(
                         },
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text(text = itemTitle)
+                        Text(
+                            text = itemTitle,
+                            color = AppTheme.colors.uiSurfaceInverted,
+                            style = AppTheme.typography.button
+                        )
                     }
                 }
             }
