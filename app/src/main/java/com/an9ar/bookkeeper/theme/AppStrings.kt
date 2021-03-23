@@ -1,6 +1,5 @@
 package com.an9ar.bookkeeper.theme
 
-import com.an9ar.bookkeeper.utils.NonTranslatable
 import com.an9ar.bookkeeper.utils.Translatable
 import com.an9ar.bookkeeper.utils.registerSupportedLocales
 import java.util.*

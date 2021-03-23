@@ -66,7 +66,6 @@ fun CollectionScreen(
             }
             CollectionScreenContent(
                 navHostController = navHostController,
-                mainViewModel = mainViewModel,
                 booksCollection = booksCollection.value
                     .map { it.toBookEntity() }
                     .filter { it.bookType == selectedContentBookType }
@@ -145,7 +144,6 @@ fun CollectionScreenToolbar(
 @Composable
 fun CollectionScreenContent(
     navHostController: NavHostController,
-    mainViewModel: MainViewModel,
     booksCollection: List<BookEntity>
 ) {
     LazyVerticalGrid(
