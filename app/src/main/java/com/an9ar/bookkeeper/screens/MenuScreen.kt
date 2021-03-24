@@ -98,7 +98,7 @@ fun MenuScreenContent(
             modifier = Modifier.padding(16.dp)
         )
         val menuItemsList = listOf(
-            "Settings" to {},
+            "Settings" to { navHostController.navigate(Screens.SettingsScreen.routeName) },
             "Credits" to { navHostController.navigate(Screens.CreditsScreen.routeName) },
         )
         LazyColumn(

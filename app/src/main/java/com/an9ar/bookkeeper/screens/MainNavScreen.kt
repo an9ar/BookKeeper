@@ -37,7 +37,7 @@ fun MainNavScreen(
                 MenuScreen(navHostController = navHostController)
             }
             composable(Screens.SettingsScreen.routeName) {
-                SettingsScreen()
+                SettingsScreen(navHostController = navHostController)
             }
             composable(Screens.CreditsScreen.routeName) {
                 CreditsScreen(navHostController = navHostController)
