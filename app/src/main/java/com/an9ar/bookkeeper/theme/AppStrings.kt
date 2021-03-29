@@ -1,29 +1,21 @@
 package com.an9ar.bookkeeper.theme
 
-import com.an9ar.bookkeeper.utils.Translatable
-import com.an9ar.bookkeeper.utils.registerSupportedLocales
-import java.util.*
+const val ENGLISH = "ENGLISH"
+const val RUSSIAN = "RUSSIAN"
 
-val ENGLISH = Locale("en")
-val RUSSIAN = Locale("ru")
-
-val supportedLocalesNow = registerSupportedLocales(ENGLISH, RUSSIAN)
-
-val booktype_in_progress = Translatable("in_progress", "In progress") {
-    hashMapOf(
-        ENGLISH to "In progress",
-        RUSSIAN to "Читаются"
-    )
+object StringsCollection {
+    val booktype_in_progress_ru = "Читаются"
+    val booktype_in_progress_en = "In progress"
 }
-val booktype_reading_list = Translatable("reading_list", "Reading list") {
-    hashMapOf(
-        ENGLISH to "Reading list",
-        RUSSIAN to "В списке для чтения"
-    )
+
+interface AppStrings {
+    val BookTypeInProgress: String
 }
-val booktype_read = Translatable("read", "Read") {
-    hashMapOf(
-        ENGLISH to "Read",
-        RUSSIAN to "Прочитано"
-    )
+
+fun russianLocale(): AppStrings = object : AppStrings {
+    override val BookTypeInProgress: String = StringsCollection.booktype_in_progress_ru
+}
+
+fun englishLocale(): AppStrings = object : AppStrings {
+    override val BookTypeInProgress: String = StringsCollection.booktype_in_progress_en
 }
