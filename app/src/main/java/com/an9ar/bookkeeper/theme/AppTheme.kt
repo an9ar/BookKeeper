@@ -14,6 +14,7 @@ fun BookKeeperTheme(
     CompositionLocalProvider(
         LocalColor provides colors,
         LocalTypography provides typography,
+        LocalStrings provides russianLocale(),
     ) {
         MaterialTheme(
             colors = colors.materialColors,
@@ -34,7 +35,11 @@ object AppTheme {
 
     val sizes: AppSizes
         @Composable get() = AppSizes()
+
+    val strings: AppStrings
+        @Composable get() = LocalStrings.current
 }
 
 internal val LocalColor = staticCompositionLocalOf { lightColorPalette() }
 internal val LocalTypography = staticCompositionLocalOf { AppTypography() }
+internal val LocalStrings = staticCompositionLocalOf { englishLocale() }
