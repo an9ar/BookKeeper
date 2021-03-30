@@ -3,19 +3,27 @@ package com.an9ar.bookkeeper.theme
 const val ENGLISH = "ENGLISH"
 const val RUSSIAN = "RUSSIAN"
 
-object StringsCollection {
-    val booktype_in_progress_ru = "Читаются"
-    val booktype_in_progress_en = "In progress"
+val StringsMap = hashMapOf<String, Map<Strings, String>>(
+    ENGLISH to hashMapOf (
+        Strings.BookTypeInProgress to "In progress"
+    ),
+    RUSSIAN to hashMapOf (
+        Strings.BookTypeInProgress to "Читаются"
+    )
+)
+
+sealed class Strings {
+    object BookTypeInProgress : Strings()
 }
 
 interface AppStrings {
-    val BookTypeInProgress: String
+    val bookTypeInProgress: String
 }
 
 fun russianLocale(): AppStrings = object : AppStrings {
-    override val BookTypeInProgress: String = StringsCollection.booktype_in_progress_ru
+    override val bookTypeInProgress: String = StringsMap[RUSSIAN]?.get(Strings.BookTypeInProgress) ?: ""
 }
 
 fun englishLocale(): AppStrings = object : AppStrings {
-    override val BookTypeInProgress: String = StringsCollection.booktype_in_progress_en
+    override val bookTypeInProgress: String = StringsMap[ENGLISH]?.get(Strings.BookTypeInProgress) ?: ""
 }
