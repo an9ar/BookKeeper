@@ -59,21 +59,21 @@ fun BookAddScreenContent(
         BookScreenInputField(
             scope = this,
             layoutWeight = 0.125f,
-            label = "Book title",
+            label = AppTheme.strings.bookTitle,
             isValidated = isValidated,
             onInputValueChanged = { bookData.title = it }
         )
         BookScreenInputField(
             scope = this,
             layoutWeight = 0.125f,
-            label = "Book author",
+            label = AppTheme.strings.bookAuthor,
             isValidated = isValidated,
             onInputValueChanged = { bookData.author = it }
         )
         BookScreenInputField(
             scope = this,
             layoutWeight = 0.125f,
-            label = "Your short description (optional)",
+            label = AppTheme.strings.shortDescription,
             onInputValueChanged = { bookData.comment = it }
         )
         BookScreenSubmitButton(

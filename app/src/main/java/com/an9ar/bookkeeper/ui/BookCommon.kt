@@ -410,7 +410,7 @@ fun BookScreenTypeDropdownMenu(
                 )
         ) {
             Text(
-                text = if (selectedValue.isEmpty()) "Choose book type" else selectedValue,
+                text = if (selectedValue.isEmpty()) AppTheme.strings.chooseBookStatus else selectedValue,
                 color = AppTheme.colors.text,
                 textAlign = TextAlign.Center,
                 style = AppTheme.typography.button,
