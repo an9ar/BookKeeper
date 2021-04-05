@@ -275,7 +275,6 @@ fun ImageChangeDialog(
                         onClick = {
                             isValidated = true
                             onSubmitClick(imageURL)
-                            //if (imageURL.isNotEmpty()) navHostController.navigateUp()
                         },
                         shape = RoundedCornerShape(8.dp),
                         colors = ButtonDefaults.buttonColors(
@@ -470,7 +469,7 @@ fun BookScreenSubmitButton(
                     .padding(horizontal = 32.dp)
             ) {
                 Text(
-                    text = "Save",
+                    text = AppTheme.strings.save,
                     color = AppTheme.colors.uiSurfaceInverted,
                     textAlign = TextAlign.Center,
                     style = AppTheme.typography.button,

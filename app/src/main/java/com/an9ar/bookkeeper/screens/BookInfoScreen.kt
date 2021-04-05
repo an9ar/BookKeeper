@@ -24,7 +24,7 @@ fun BookInfoScreen(
     Scaffold(
         topBar = {
             BookScreenToolbar(
-                title = "Edit book info",
+                title = AppTheme.strings.editBookInfo,
                 navHostController = navHostController
             )
         }
@@ -78,7 +78,7 @@ fun BookInfoScreenContent(
             scope = this,
             layoutWeight = 0.125f,
             initValue = bookData.title,
-            label = "Book title",
+            label = AppTheme.strings.bookTitle,
             isValidated = isValidated,
             onInputValueChanged = { changedString ->
                 realmObject.executeTransaction {
@@ -90,7 +90,7 @@ fun BookInfoScreenContent(
             scope = this,
             layoutWeight = 0.125f,
             initValue = bookData.author,
-            label = "Book author",
+            label = AppTheme.strings.bookAuthor,
             isValidated = isValidated,
             onInputValueChanged = { changedString ->
                 realmObject.executeTransaction {
@@ -102,7 +102,7 @@ fun BookInfoScreenContent(
             scope = this,
             layoutWeight = 0.125f,
             initValue = bookData.comment,
-            label = "Your short description (optional)",
+            label = AppTheme.strings.shortDescription,
             onInputValueChanged = { changedString ->
                 realmObject.executeTransaction {
                     bookData.comment = changedString
