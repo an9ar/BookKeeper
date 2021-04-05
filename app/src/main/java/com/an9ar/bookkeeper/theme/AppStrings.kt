@@ -12,6 +12,7 @@ val StringsMap = hashMapOf<String, Map<Strings, String>>(
         Strings.BookTypeInProgress to "In progress",
         Strings.BookTypeReadingList to "Reading list",
         Strings.ChooseBookStatus to "Book status",
+        Strings.AddNewBook to "Add new book",
         Strings.BookTitle to "Book title",
         Strings.BookAuthor to "Book author",
         Strings.ShortDescription to "Your short description (optional)",
@@ -24,9 +25,10 @@ val StringsMap = hashMapOf<String, Map<Strings, String>>(
         Strings.BookTypeInProgress to "Читаются",
         Strings.BookTypeReadingList to "В списке для чтения",
         Strings.ChooseBookStatus to "Статус книги",
+        Strings.AddNewBook to "Добавить книгу",
         Strings.BookTitle to "Название",
         Strings.BookAuthor to "Автор",
-        Strings.ShortDescription to "Краткое описание (не обязательно)",
+        Strings.ShortDescription to "Краткое описание (опционально)",
     )
 )
 
@@ -38,6 +40,7 @@ sealed class Strings {
     object BookTypeInProgress : Strings()
     object BookTypeReadingList : Strings()
     object ChooseBookStatus : Strings()
+    object AddNewBook : Strings()
     object BookTitle : Strings()
     object BookAuthor : Strings()
     object ShortDescription : Strings()
@@ -51,6 +54,7 @@ interface AppStrings {
     val bookTypeInProgress: String
     val bookTypeReadingList: String
     val chooseBookStatus: String
+    val addNewBook: String
     val bookTitle: String
     val bookAuthor: String
     val shortDescription: String
@@ -64,6 +68,7 @@ fun russianLocale(): AppStrings = object : AppStrings {
     override val bookTypeInProgress: String = StringsMap[RUSSIAN]?.get(Strings.BookTypeInProgress) ?: ""
     override val bookTypeReadingList: String = StringsMap[RUSSIAN]?.get(Strings.BookTypeReadingList) ?: ""
     override val chooseBookStatus: String = StringsMap[RUSSIAN]?.get(Strings.ChooseBookStatus) ?: ""
+    override val addNewBook: String = StringsMap[RUSSIAN]?.get(Strings.AddNewBook) ?: ""
     override val bookTitle: String = StringsMap[RUSSIAN]?.get(Strings.BookTitle) ?: ""
     override val bookAuthor: String = StringsMap[RUSSIAN]?.get(Strings.BookAuthor) ?: ""
     override val shortDescription: String = StringsMap[RUSSIAN]?.get(Strings.ShortDescription) ?: ""
@@ -77,6 +82,7 @@ fun englishLocale(): AppStrings = object : AppStrings {
     override val bookTypeInProgress: String = StringsMap[ENGLISH]?.get(Strings.BookTypeInProgress) ?: ""
     override val bookTypeReadingList: String = StringsMap[ENGLISH]?.get(Strings.BookTypeReadingList) ?: ""
     override val chooseBookStatus: String = StringsMap[ENGLISH]?.get(Strings.ChooseBookStatus) ?: ""
+    override val addNewBook: String = StringsMap[RUSSIAN]?.get(Strings.AddNewBook) ?: ""
     override val bookTitle: String = StringsMap[ENGLISH]?.get(Strings.BookTitle) ?: ""
     override val bookAuthor: String = StringsMap[ENGLISH]?.get(Strings.BookAuthor) ?: ""
     override val shortDescription: String = StringsMap[ENGLISH]?.get(Strings.ShortDescription) ?: ""

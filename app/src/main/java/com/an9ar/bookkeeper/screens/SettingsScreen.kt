@@ -88,7 +88,7 @@ fun SettingsScreenContent() {
             MenuListItem(
                 itemTitle = menuItem.first,
                 onClickAction = {
-                    LocalStrings.provides(menuItem.second)
+
                 }
             )
         }

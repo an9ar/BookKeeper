@@ -22,7 +22,7 @@ fun BookAddScreen(
     Scaffold(
         topBar = {
             BookScreenToolbar(
-                title = "Add new book",
+                title = AppTheme.strings.addNewBook,
                 navHostController = navHostController
             )
         }
